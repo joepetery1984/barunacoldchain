@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baruna ColdHub — Sistem Bisnis Cold Chain</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --navy: #0a1628;
+            --ocean: #0d3b6e;
+            --wave: #1565c0;
+            --aqua: #00b4d8;
+            --ice: #90e0ef;
+            --foam: #e8f4f8;
+            --gold: #f4a022;
+            --white: #ffffff;
+            --text: #1a2e4a;
+            --muted: #5a7a96;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--foam);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 { font-family: 'Sora', sans-serif; }
+
+        /* ====== HERO ====== */
+        .hero {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--ocean) 50%, #0a4f8c 100%);
+            color: white;
+            padding: 60px 40px 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -60px; right: -80px;
+            width: 500px; height: 500px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0,180,216,0.15) 0%, transparent 70%);
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -40px; left: -60px;
+            width: 350px; height: 350px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0,180,216,0.1) 0%, transparent 70%);
+        }
+
+        .hero-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0,180,216,0.2);
+            border: 1px solid rgba(0,180,216,0.4);
+            color: var(--ice);
+            padding: 6px 16px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 24px;
+            letter-spacing: 0.5px;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.4rem, 5vw, 4rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 8px;
+        }
+
+        .hero h1 span { color: var(--aqua); }
+
+        .hero-sub {
+            font-size: 1.15rem;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 32px;
+            font-weight: 300;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 32px;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-num {
+            font-family: 'Sora', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--aqua);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: rgba(255,255,255,0.55);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        /* ====== NAV TABS ====== */
+        .nav-tabs {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--navy);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            padding: 0 40px;
+            overflow-x: auto;
+        }
+
+        .nav-tabs-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            gap: 4px;
+        }
+
+        .tab-btn {
+            padding: 16px 20px;
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.5);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            white-space: nowrap;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tab-btn:hover { color: white; }
+        .tab-btn.active { color: var(--aqua); border-bottom-color: var(--aqua); }
+
+        /* ====== SECTIONS ====== */
+        .section { display: none; padding: 48px 40px; max-width: 1200px; margin: 0 auto; }
+        .section.active { display: block; animation: fadeIn 0.3s ease; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+        .section-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--ocean);
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-title i { color: var(--aqua); }
+        .section-desc { color: var(--muted); margin-bottom: 32px; font-size: 15px; }
+
+        /* ====== CARDS ====== */
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            border: 1px solid rgba(0,0,0,0.06);
+        }
+
+        .card-title {
+            font-family: 'Sora', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--ocean);
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-title i { color: var(--aqua); }
+
+        /* ====== GRID LAYOUTS ====== */
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+        .grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+
+        @media (max-width: 900px) {
+            .grid-4, .grid-5 { grid-template-columns: 1fr 1fr; }
+            .grid-3 { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 600px) {
+            .grid-2, .grid-3, .grid-4, .grid-5 { grid-template-columns: 1fr; }
+            .section { padding: 32px 20px; }
+            .hero { padding: 40px 20px 60px; }
+            .nav-tabs { padding: 0 16px; }
+        }
+
+        /* ====== LIST ITEMS ====== */
+        .list-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            font-size: 14px;
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        .list-item:last-child { border-bottom: none; }
+        .list-item i { color: var(--aqua); margin-top: 2px; flex-shrink: 0; }
+
+        /* ====== BMC ====== */
+        .bmc-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1.4fr 1fr 1fr;
+            grid-template-rows: auto auto;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .bmc-block {
+            background: white;
+            border-radius: 14px;
+            padding: 20px;
+            border: 1.5px solid #e2ecf5;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .bmc-vp {
+            grid-column: 3;
+            grid-row: 1 / 3;
+            border-color: #0d6e3b;
+            background: linear-gradient(160deg, #f0fff8, #ffffff);
+        }
+
+        .bmc-title {
+            font-family: 'Sora', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            margin-bottom: 12px;
+            color: var(--ocean);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .bmc-vp .bmc-title { color: #0d6e3b; }
+
+        .bmc-item {
+            font-size: 13px;
+            color: #374151;
+            padding: 5px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.04);
+            line-height: 1.45;
+            display: flex;
+            gap: 6px;
+        }
+
+        .bmc-item::before { content: '•'; color: var(--aqua); flex-shrink: 0; }
+        .bmc-vp .bmc-item::before { color: #10b981; }
+
+        .bmc-bottom {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .bmc-cost { border-color: #dc2626; background: linear-gradient(160deg, #fff5f5, #ffffff); }
+        .bmc-revenue { border-color: #16a34a; background: linear-gradient(160deg, #f0fff4, #ffffff); }
+        .bmc-cost .bmc-title { color: #dc2626; }
+        .bmc-revenue .bmc-title { color: #16a34a; }
+
+        /* ====== FLOW CHAIN ====== */
+        .flow-chain {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            overflow-x: auto;
+            padding: 8px 0 16px;
+        }
+
+        .flow-node {
+            flex-shrink: 0;
+            text-align: center;
+            padding: 20px 16px;
+            background: white;
+            border-radius: 14px;
+            border: 2px solid #e2ecf5;
+            min-width: 130px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .flow-node:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(13,59,110,0.12); }
+
+        .flow-node .icon { font-size: 2rem; margin-bottom: 8px; }
+        .flow-node .name { font-family: 'Sora', sans-serif; font-size: 13px; font-weight: 700; color: var(--ocean); margin-bottom: 4px; }
+        .flow-node .sub { font-size: 11px; color: var(--muted); line-height: 1.4; }
+
+        .flow-arrow {
+            flex-shrink: 0;
+            font-size: 1.5rem;
+            color: var(--aqua);
+            padding: 0 6px;
+        }
+
+        /* ====== COLD CHAIN TABLE ====== */
+        .chain-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .chain-table th {
+            background: var(--ocean);
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-family: 'Sora', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .chain-table th:first-child { border-radius: 8px 0 0 0; }
+        .chain-table th:last-child { border-radius: 0 8px 0 0; }
+
+        .chain-table td {
+            padding: 13px 16px;
+            border-bottom: 1px solid #e8f0f7;
+            color: var(--text);
+            vertical-align: top;
+        }
+
+        .chain-table tr:last-child td { border-bottom: none; }
+        .chain-table tr:hover td { background: #f0f8ff; }
+        .chain-table .step-num { font-weight: 700; color: var(--ocean); white-space: nowrap; }
+        .temp-badge {
+            display: inline-block;
+            background: #dbeafe;
+            color: var(--ocean);
+            padding: 2px 10px;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        /* ====== STEPS ====== */
+        .step-list { display: flex; flex-direction: column; gap: 16px; }
+
+        .step-item {
+            display: flex;
+            gap: 20px;
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid #e2ecf5;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .step-item:hover { transform: translateX(4px); box-shadow: 0 4px 16px rgba(13,59,110,0.1); }
+
+        .step-num-circle {
+            width: 48px;
+            height: 48px;
+            flex-shrink: 0;
+            background: linear-gradient(135deg, var(--wave), var(--ocean));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Sora', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 800;
+        }
+
+        .step-content h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--ocean);
+            margin-bottom: 6px;
+        }
+
+        .step-content p { font-size: 14px; color: #4a6378; line-height: 1.6; }
+        .step-content .note { margin-top: 8px; font-size: 12px; color: var(--muted); background: var(--foam); padding: 6px 12px; border-radius: 8px; display: inline-block; }
+
+        /* ====== INFRA CARDS ====== */
+        .infra-card {
+            background: white;
+            border-radius: 14px;
+            padding: 22px;
+            border: 1.5px solid #e2ecf5;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .infra-icon {
+            width: 48px; height: 48px;
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.4rem;
+            margin-bottom: 14px;
+        }
+
+        .infra-card h4 { font-size: 15px; font-weight: 700; color: var(--ocean); margin-bottom: 8px; }
+
+        /* ====== REVENUE BLOCKS ====== */
+        .rev-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: var(--foam);
+            border-radius: 12px;
+            margin-bottom: 10px;
+        }
+
+        .rev-icon {
+            width: 44px; height: 44px; flex-shrink: 0;
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .rev-label { font-weight: 600; font-size: 14px; color: var(--ocean); }
+        .rev-desc { font-size: 13px; color: var(--muted); margin-top: 2px; }
+
+        /* ====== SEGMENT CARDS ====== */
+        .seg-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            border: 1.5px solid #e2ecf5;
+            text-align: center;
+        }
+
+        .seg-icon { font-size: 2.5rem; margin-bottom: 12px; }
+        .seg-card h4 { font-size: 15px; font-weight: 700; color: var(--ocean); margin-bottom: 8px; }
+        .seg-card p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+        .seg-badge {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 3px 12px;
+            background: #dbeafe;
+            color: var(--ocean);
+            border-radius: 100px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        /* ====== TECH CARDS ====== */
+        .tech-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px;
+            background: white;
+            border-radius: 12px;
+            border: 1px solid #e2ecf5;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+            margin-bottom: 10px;
+        }
+
+        .tech-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--aqua); flex-shrink: 0; }
+        .tech-item h5 { font-size: 14px; font-weight: 600; color: var(--ocean); }
+        .tech-item p { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+        /* ====== HIGHLIGHT BOX ====== */
+        .highlight-box {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--ocean) 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 20px;
+        }
+
+        .highlight-box h3 { font-size: 1.1rem; margin-bottom: 8px; color: var(--ice); }
+        .highlight-box p { font-size: 14px; color: rgba(255,255,255,0.75); line-height: 1.7; }
+
+        /* ====== PHASE ROADMAP ====== */
+        .phase-item {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            padding: 20px;
+            background: white;
+            border-radius: 14px;
+            border: 1px solid #e2ecf5;
+            margin-bottom: 12px;
+        }
+
+        .phase-badge {
+            flex-shrink: 0;
+            padding: 6px 16px;
+            border-radius: 100px;
+            font-family: 'Sora', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .phase-1 { background: #dbeafe; color: var(--ocean); }
+        .phase-2 { background: #d1fae5; color: #065f46; }
+        .phase-3 { background: #fef3c7; color: #92400e; }
+
+        .phase-item p { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+        /* ====== FOOTER ====== */
+        .page-footer {
+            background: var(--navy);
+            color: rgba(255,255,255,0.45);
+            text-align: center;
+            padding: 24px;
+            font-size: 13px;
+            margin-top: 0;
+        }
+
+        .page-footer strong { color: rgba(255,255,255,0.8); }
+
+        /* ====== CONNECTOR ====== */
+        .temp-flow {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .temp-node {
+            background: white;
+            border-radius: 14px;
+            padding: 20px;
+            border: 1.5px solid #e2ecf5;
+            text-align: center;
+        }
+
+        .temp-node .emoji { font-size: 2.2rem; margin-bottom: 10px; }
+        .temp-node h4 { font-family: 'Sora', sans-serif; font-size: 14px; font-weight: 700; color: var(--ocean); margin-bottom: 6px; }
+        .temp-node .temp { font-size: 15px; font-weight: 700; color: var(--aqua); }
+        .temp-node .tdesc { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+        @media (max-width: 700px) {
+            .temp-flow { grid-template-columns: 1fr 1fr; }
+            .bmc-wrapper { grid-template-columns: 1fr 1fr; }
+            .bmc-vp { grid-column: span 2; grid-row: auto; }
+        }
+
+        @media (max-width: 480px) {
+            .bmc-wrapper { grid-template-columns: 1fr; }
+            .bmc-vp { grid-column: span 1; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ====== HERO ====== -->
+<div class="hero">
+    <div class="hero-inner">
+        <div class="hero-badge"><i class="fas fa-snowflake"></i> Franchise Cold Chain System</div>
+        <h1>BARUNA <span>ColdHub</span></h1>
+        <p class="hero-sub">Jaringan Cold Storage Premium — Seafood + Produk Ayam Olahan</p>
+        <div class="hero-stats">
+            <div class="stat">
+                <span class="stat-num">-25°C</span>
+                <span class="stat-label">Suhu Paling Dingin</span>
+            </div>
+            <div class="stat">
+                <span class="stat-num">3 Level</span>
+                <span class="stat-label">Central → Agen → Reseller</span>
+            </div>
+            <div class="stat">
+                <span class="stat-num">100%</span>
+                <span class="stat-label">Terpantau IoT Real-time</span>
+            </div>
+            <div class="stat">
+                <span class="stat-num">7 Tahap</span>
+                <span class="stat-label">Cold Chain Terstruktur</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ====== TABS ====== -->
+<div class="nav-tabs">
+    <div class="nav-tabs-inner">
+        <button class="tab-btn active" onclick="showTab('gambaran')"><i class="fas fa-globe"></i> Gambaran Besar</button>
+        <button class="tab-btn" onclick="showTab('coldchain')"><i class="fas fa-route"></i> Cold Chain</button>
+        <button class="tab-btn" onclick="showTab('kemitraan')"><i class="fas fa-handshake"></i> Alur Kemitraan</button>
+        <button class="tab-btn" onclick="showTab('bmc')"><i class="fas fa-th"></i> Business Model</button>
+        <button class="tab-btn" onclick="showTab('teknologi')"><i class="fas fa-microchip"></i> Teknologi</button>
+        <button class="tab-btn" onclick="showTab('roadmap')"><i class="fas fa-road"></i> Roadmap</button>
+    </div>
+</div>
+
+<div style="background: var(--foam); min-height: 60vh;">
+
+<!-- ====== TAB 1: GAMBARAN BESAR ====== -->
+<div id="tab-gambaran" class="section active">
+    <div class="section-title"><i class="fas fa-globe"></i> Gambaran Besar Sistem Baruna ColdHub</div>
+    <div class="section-desc">Bagaimana alur produk dari nelayan sampai ke tangan pembeli akhir.</div>
+
+    <div class="highlight-box">
+        <h3><i class="fas fa-lightbulb"></i> &nbsp;Apa itu Baruna ColdHub?</h3>
+        <p>Baruna ColdHub adalah sistem bisnis franchise cold storage yang menghubungkan <strong>nelayan & supplier</strong> langsung ke <strong>reseller kecil dan UMKM</strong> — tanpa rantai tengkulak yang panjang. Semua dipantau dengan teknologi IoT secara real-time.</p>
+    </div>
+
+    <!-- Flow visual -->
+    <div class="card" style="margin-bottom: 24px; overflow-x: auto;">
+        <div class="card-title"><i class="fas fa-arrows-alt-h"></i> Alur Distribusi Utama</div>
+        <div class="flow-chain">
+            <div class="flow-node" style="border-color: #f59e0b; background: #fffbeb;">
+                <div class="icon">🎣</div>
+                <div class="name">Sumber Barang</div>
+                <div class="sub">Nelayan & Koperasi<br/>+ Supplier Besar</div>
+            </div>
+            <div class="flow-arrow"><i class="fas fa-chevron-right"></i></div>
+            <div class="flow-node" style="border-color: var(--wave); background: #eff6ff;">
+                <div class="icon">❄️</div>
+                <div class="name">Central Baruna</div>
+                <div class="sub">Procurement, QC<br/>& Cold Storage Induk</div>
+            </div>
+            <div class="flow-arrow"><i class="fas fa-chevron-right"></i></div>
+            <div class="flow-node" style="border-color: #7c3aed; background: #f5f3ff;">
+                <div class="icon">🏭</div>
+                <div class="name">Gudang Agen</div>
+                <div class="sub">10–20 ton kapasitas<br/>Mitra Franchisee</div>
+            </div>
+            <div class="flow-arrow"><i class="fas fa-chevron-right"></i></div>
+            <div class="flow-node" style="border-color: #db2777; background: #fdf2f8;">
+                <div class="icon">🏪</div>
+                <div class="name">Reseller</div>
+                <div class="sub">2–10 unit freezer<br/>Toko kecil & UMKM</div>
+            </div>
+            <div class="flow-arrow"><i class="fas fa-chevron-right"></i></div>
+            <div class="flow-node" style="border-color: #16a34a; background: #f0fdf4;">
+                <div class="icon">🛒</div>
+                <div class="name">Pembeli Akhir</div>
+                <div class="sub">Konsumen rumah<br/>HORECA kecil</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3 Column peran -->
+    <div class="grid-3" style="margin-bottom: 24px;">
+        <div class="card">
+            <div class="card-title"><i class="fas fa-building"></i> Central Baruna ColdHub</div>
+            <div class="list-item"><i class="fas fa-check-circle"></i> Pusat kendali seluruh sistem</div>
+            <div class="list-item"><i class="fas fa-check-circle"></i> QC ketat semua produk masuk</div>
+            <div class="list-item"><i class="fas fa-check-circle"></i> Monitoring suhu & stok via IoT</div>
+            <div class="list-item"><i class="fas fa-check-circle"></i> Training & support semua mitra</div>
+            <div class="list-item"><i class="fas fa-check-circle"></i> Pengelola brand & SOP</div>
+        </div>
+        <div class="card">
+            <div class="card-title"><i class="fas fa-warehouse"></i> Gudang Agen</div>
+            <div class="list-item"><i class="fas fa-check-circle"></i> Kapasitas 10–20 ton</div>
+            <div class="list-item"><i class="fas fa-check-circle"></i> Buffer stock untuk area regional</div>
+            <div class="list-item"><i class="fas fa-check-circle"></i> Distribusi ke banyak reseller</div>
+            <div class="list-item"><i class="fas fa-check-circle"></i> Bayar Franchise Fee ke Central</div>
+            <div class="list-item"><i class="fas fa-check-circle"></i> Gunakan App & Dashboard</div>
+        </div>
+        <div class="card">
+            <div class="card-title"><i class="fas fa-store"></i> Reseller</div>
+            <div class="list-item"><i class="fas fa-check-circle"></i> 2–10 unit freezer standar</div>
+            <div class="list-item"><i class="fas fa-check-circle"></i> Order via aplikasi mobile</div>
+            <div class="list-item"><i class="fas fa-check-circle"></i> Jual ke konsumen & warung</div>
+            <div class="list-item"><i class="fas fa-check-circle"></i> Support langsung dari Agen</div>
+            <div class="list-item"><i class="fas fa-check-circle"></i> Modal relatif kecil</div>
+        </div>
+    </div>
+
+    <!-- Value Propositions ringkas -->
+    <div class="card">
+        <div class="card-title"><i class="fas fa-gem"></i> Kenapa Baruna ColdHub Berbeda?</div>
+        <div class="grid-3">
+            <div style="padding: 16px; background: var(--foam); border-radius: 12px; text-align: center;">
+                <div style="font-size: 1.8rem; margin-bottom: 8px;">💰</div>
+                <div style="font-weight: 700; font-size: 14px; color: var(--ocean); margin-bottom: 4px;">Harga Kompetitif</div>
+                <div style="font-size: 12px; color: var(--muted);">Beli langsung dari nelayan, tidak lewat tengkulak</div>
+            </div>
+            <div style="padding: 16px; background: var(--foam); border-radius: 12px; text-align: center;">
+                <div style="font-size: 1.8rem; margin-bottom: 8px;">🌡️</div>
+                <div style="font-weight: 700; font-size: 14px; color: var(--ocean); margin-bottom: 4px;">Kualitas Terjaga</div>
+                <div style="font-size: 12px; color: var(--muted);">Cold chain end-to-end + IoT sensor real-time</div>
+            </div>
+            <div style="padding: 16px; background: var(--foam); border-radius: 12px; text-align: center;">
+                <div style="font-size: 1.8rem; margin-bottom: 8px;">📦</div>
+                <div style="font-weight: 700; font-size: 14px; color: var(--ocean); margin-bottom: 4px;">Supply Stabil</div>
+                <div style="font-size: 12px; color: var(--muted);">Seafood + ayam olahan dari jaringan luas</div>
+            </div>
+            <div style="padding: 16px; background: var(--foam); border-radius: 12px; text-align: center;">
+                <div style="font-size: 1.8rem; margin-bottom: 8px;">📱</div>
+                <div style="font-weight: 700; font-size: 14px; color: var(--ocean); margin-bottom: 4px;">Teknologi Lengkap</div>
+                <div style="font-size: 12px; color: var(--muted);">App order + inventory + tracking realtime</div>
+            </div>
+            <div style="padding: 16px; background: var(--foam); border-radius: 12px; text-align: center;">
+                <div style="font-size: 1.8rem; margin-bottom: 8px;">🤝</div>
+                <div style="font-weight: 700; font-size: 14px; color: var(--ocean); margin-bottom: 4px;">Sistem Franchise</div>
+                <div style="font-size: 12px; color: var(--muted);">SOP terstandarisasi, brand sudah terbukti</div>
+            </div>
+            <div style="padding: 16px; background: var(--foam); border-radius: 12px; text-align: center;">
+                <div style="font-size: 1.8rem; margin-bottom: 8px;">🔍</div>
+                <div style="font-weight: 700; font-size: 14px; color: var(--ocean); margin-bottom: 4px;">Traceability</div>
+                <div style="font-size: 12px; color: var(--muted);">Terlacak dari nelayan sampai pembeli akhir</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ====== TAB 2: COLD CHAIN ====== -->
+<div id="tab-coldchain" class="section">
+    <div class="section-title"><i class="fas fa-route"></i> Logistik Cold Chain — 7 Tahap</div>
+    <div class="section-desc">Sistem rantai dingin Baruna ColdHub menjaga suhu produk dari sumber hingga ke tangan pembeli.</div>
+
+    <div class="highlight-box" style="margin-bottom: 24px;">
+        <h3><i class="fas fa-info-circle"></i> &nbsp;Apa itu Cold Chain?</h3>
+        <p>Cold Chain adalah sistem rantai pasok yang menjaga suhu produk secara konsisten dari titik pengadaan sampai konsumen akhir. Di Baruna ColdHub, fokus pada <strong>hasil laut segar</strong> dan <strong>produk olahan ayam beku</strong>.</p>
+    </div>
+
+    <!-- Temp visual -->
+    <div class="temp-flow" style="margin-bottom: 24px;">
+        <div class="temp-node">
+            <div class="emoji">❄️</div>
+            <h4>Central Baruna</h4>
+            <div class="temp">-18°C ~ -25°C</div>
+            <div class="tdesc">Blast freezer & storage induk</div>
+        </div>
+        <div class="temp-node">
+            <div class="emoji">🚚</div>
+            <h4>Transportasi</h4>
+            <div class="temp">-18°C</div>
+            <div class="tdesc">Reefer Truck / Container</div>
+        </div>
+        <div class="temp-node">
+            <div class="emoji">🏭</div>
+            <h4>Gudang Agen</h4>
+            <div class="temp">-18°C ~ -22°C</div>
+            <div class="tdesc">Buffer stock regional</div>
+        </div>
+        <div class="temp-node">
+            <div class="emoji">🧊</div>
+            <h4>Reseller</h4>
+            <div class="temp">-18°C</div>
+            <div class="tdesc">Freezer standar mitra</div>
+        </div>
+    </div>
+
+    <!-- Detail table -->
+    <div class="card" style="overflow-x: auto;">
+        <div class="card-title"><i class="fas fa-table"></i> Detail Setiap Tahap</div>
+        <table class="chain-table">
+            <thead>
+                <tr>
+                    <th>Tahap</th>
+                    <th>Lokasi</th>
+                    <th>Suhu Target</th>
+                    <th>Aktivitas Utama</th>
+                    <th>Penanggungjawab</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="step-num">1. Sourcing</td>
+                    <td>Nelayan / Koperasi & Supplier</td>
+                    <td><span class="temp-badge">0°C ~ -5°C</span></td>
+                    <td>Penangkapan, sortasi, pendinginan cepat</td>
+                    <td>Nelayan + Tim QC Baruna</td>
+                </tr>
+                <tr>
+                    <td class="step-num">2. Cold Storage Induk</td>
+                    <td>Muncar, Maluku Utara, Aceh</td>
+                    <td><span class="temp-badge" style="background:#dbeafe; color: #1e3a8a;">-18°C ~ -25°C</span></td>
+                    <td>Penerimaan, QC, grading, blast freezing, packing</td>
+                    <td>Tim Operasional Central</td>
+                </tr>
+                <tr>
+                    <td class="step-num">3. Gudang Produksi</td>
+                    <td>Terintegrasi dengan Induk</td>
+                    <td><span class="temp-badge" style="background:#dbeafe; color: #1e3a8a;">-18°C ~ -25°C</span></td>
+                    <td>Value added processing & repacking</td>
+                    <td>Tim Produksi</td>
+                </tr>
+                <tr>
+                    <td class="step-num">4. Transportasi ke Agen</td>
+                    <td>Antar kota / antar pulau</td>
+                    <td><span class="temp-badge">-18°C</span></td>
+                    <td>Pengiriman via Reefer Truck / Container</td>
+                    <td>Tim Logistik / 3PL</td>
+                </tr>
+                <tr>
+                    <td class="step-num">5. Gudang Agen</td>
+                    <td>Kapasitas 10–20 ton</td>
+                    <td><span class="temp-badge">-18°C ~ -22°C</span></td>
+                    <td>Buffer stock & distribusi ke reseller</td>
+                    <td>Franchisee Agen</td>
+                </tr>
+                <tr>
+                    <td class="step-num">6. Transportasi ke Reseller</td>
+                    <td>Last mile (dalam kota)</td>
+                    <td><span class="temp-badge">-18°C</span></td>
+                    <td>Pengiriman via insulated box</td>
+                    <td>Agen / 3PL</td>
+                </tr>
+                <tr>
+                    <td class="step-num">7. Reseller</td>
+                    <td>Toko / Rumah / Warung</td>
+                    <td><span class="temp-badge">-18°C</span></td>
+                    <td>Penyimpanan & penjualan ke konsumen</td>
+                    <td>Franchisee Reseller</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="grid-2" style="margin-top: 20px;">
+        <div class="card">
+            <div class="card-title"><i class="fas fa-warehouse"></i> Infrastruktur Fisik</div>
+            <div class="list-item"><i class="fas fa-check-circle"></i><span><strong>Cold Storage Induk</strong> + Blast Freezer (multi lokasi)</span></div>
+            <div class="list-item"><i class="fas fa-check-circle"></i><span><strong>Gudang Agen</strong> kapasitas 10–20 ton</span></div>
+            <div class="list-item"><i class="fas fa-check-circle"></i><span><strong>Freezer standar</strong> di Reseller (2–10 unit)</span></div>
+            <div class="list-item"><i class="fas fa-check-circle"></i><span><strong>Reefer Truck & Container</strong> antar pulau</span></div>
+            <div class="list-item"><i class="fas fa-check-circle"></i><span><strong>Insulated box</strong> untuk last mile delivery</span></div>
+        </div>
+        <div class="card">
+            <div class="card-title"><i class="fas fa-network-wired"></i> Peran Masing-masing Mitra</div>
+            <div style="padding: 12px; background: #eff6ff; border-radius: 10px; margin-bottom: 10px;">
+                <div style="font-weight: 700; font-size: 13px; color: var(--ocean); margin-bottom: 4px;">🏪 Bagi Reseller</div>
+                <div style="font-size: 13px; color: var(--muted);">Bisa jual produk premium dengan margin lebih tinggi.</div>
+            </div>
+            <div style="padding: 12px; background: #f0fdf4; border-radius: 10px; margin-bottom: 10px;">
+                <div style="font-weight: 700; font-size: 13px; color: #065f46; margin-bottom: 4px;">🏭 Bagi Gudang Agen</div>
+                <div style="font-size: 13px; color: var(--muted);">Kurangi kerugian stok, tingkatkan margin keuntungan.</div>
+            </div>
+            <div style="padding: 12px; background: #fefce8; border-radius: 10px;">
+                <div style="font-weight: 700; font-size: 13px; color: #92400e; margin-bottom: 4px;">🏢 Bagi Central Baruna</div>
+                <div style="font-size: 13px; color: var(--muted);">Bangun reputasi brand kuat & mudah ekspansi franchisee.</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ====== TAB 3: KEMITRAAN ====== -->
+<div id="tab-kemitraan" class="section">
+    <div class="section-title"><i class="fas fa-handshake"></i> Alur Kemitraan — Cara Bergabung</div>
+    <div class="section-desc">5 langkah resmi untuk menjadi mitra (franchisee) Baruna ColdHub, baik sebagai Gudang Agen maupun Reseller.</div>
+
+    <div class="grid-2" style="margin-bottom: 28px;">
+        <div class="seg-card">
+            <div class="seg-icon">🏭</div>
+            <h4>Jalur Gudang Agen</h4>
+            <p>Mitra menengah dengan kapasitas penyimpanan 10–20 ton. Berperan sebagai hub distribusi untuk banyak reseller di satu area.</p>
+            <div class="seg-badge">Modal Lebih Besar</div>
+            <div class="seg-badge" style="background: #d1fae5; color: #065f46; margin-left: 4px;">Return Lebih Tinggi</div>
+        </div>
+        <div class="seg-card">
+            <div class="seg-icon">🏪</div>
+            <h4>Jalur Reseller</h4>
+            <p>Mitra kecil dengan 2–10 unit freezer. Cocok untuk toko kelontong, warung, atau individu yang ingin memulai usaha dari rumah.</p>
+            <div class="seg-badge">Modal Lebih Kecil</div>
+            <div class="seg-badge" style="background: #fce7f3; color: #9d174d; margin-left: 4px;">Mudah Dimulai</div>
+        </div>
+    </div>
+
+    <div class="step-list">
+        <div class="step-item">
+            <div class="step-num-circle">1</div>
+            <div class="step-content">
+                <h4>Pendaftaran & Seleksi</h4>
+                <p>Calon mitra mengisi formulir pendaftaran melalui website atau aplikasi Baruna ColdHub. Tim Central akan melakukan verifikasi lokasi, kesiapan modal, dan komitmen jangka panjang.</p>
+                <span class="note">📋 Persyaratan: Modal awal, lokasi strategis, komitmen minimal 2 tahun</span>
+            </div>
+        </div>
+        <div class="step-item">
+            <div class="step-num-circle">2</div>
+            <div class="step-content">
+                <h4>Pelatihan & Onboarding</h4>
+                <p>Mitra mengikuti pelatihan intensif tentang SOP cold chain, cara menggunakan aplikasi, standar kualitas produk, dan manajemen stok. Materi disesuaikan dengan jenis mitra (Agen atau Reseller).</p>
+                <span class="note">⏱️ Durasi: 3–7 hari (tergantung jenis mitra)</span>
+            </div>
+        </div>
+        <div class="step-item">
+            <div class="step-num-circle">3</div>
+            <div class="step-content">
+                <h4>Setup Infrastruktur & Peralatan</h4>
+                <p>Central Baruna membantu pengadaan dan pemasangan freezer, sensor IoT, serta setup sistem. Gudang Agen juga dibantu dalam penyiapan layout gudang sesuai standar ColdHub.</p>
+                <span class="note">🛠️ Baruna menyediakan standar peralatan, instalasi IoT & branding</span>
+            </div>
+        </div>
+        <div class="step-item">
+            <div class="step-num-circle">4</div>
+            <div class="step-content">
+                <h4>Aktivasi & Mulai Operasional</h4>
+                <p>Mitra mulai menerima pasokan produk pertama dari Central. Akun aplikasi diaktifkan dan mitra langsung bisa menerima order, melihat stok, dan memantau suhu freezer.</p>
+                <span class="note">🚀 Siap beroperasi setelah semua peralatan terverifikasi</span>
+            </div>
+        </div>
+        <div class="step-item">
+            <div class="step-num-circle">5</div>
+            <div class="step-content">
+                <h4>Monitoring, Support & Evaluasi Berkala</h4>
+                <p>Central melakukan monitoring melalui Dashboard secara otomatis. Tersedia support teknis, pelatihan lanjutan, evaluasi berkala, dan feedback loop antara mitra dan Central.</p>
+                <span class="note">📊 Evaluasi dilakukan setiap bulan melalui Dashboard</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ====== TAB 4: BMC ====== -->
+<div id="tab-bmc" class="section">
+    <div class="section-title"><i class="fas fa-th"></i> Business Model Canvas</div>
+    <div class="section-desc">Kerangka bisnis lengkap Baruna ColdHub dalam satu tampilan.</div>
+
+    <div class="bmc-wrapper">
+        <div class="bmc-block">
+            <div class="bmc-title"><i class="fas fa-handshake"></i> Kemitraan Utama</div>
+            <div class="bmc-item">Koperasi Nelayan (Muncar, Maluku Utara, Aceh)</div>
+            <div class="bmc-item">Supplier Besar — Japfa, Wonokoyo</div>
+            <div class="bmc-item">Franchisee Agen & Reseller</div>
+            <div class="bmc-item">Partner Teknologi (IoT & App Dev)</div>
+        </div>
+        <div class="bmc-block">
+            <div class="bmc-title"><i class="fas fa-tasks"></i> Aktivitas Utama</div>
+            <div class="bmc-item">Procurement & QC hasil laut + ayam</div>
+            <div class="bmc-item">Operasional Cold Storage & distribusi</div>
+            <div class="bmc-item">Pengembangan App & Dashboard</div>
+            <div class="bmc-item">Training & standarisasi mitra</div>
+            <div class="bmc-item">Inventory & demand management</div>
+        </div>
+        <div class="bmc-block bmc-vp">
+            <div class="bmc-title"><i class="fas fa-gem"></i> Proposisi Nilai</div>
+            <div class="bmc-item"><strong>Harga Kompetitif</strong> — beli dari nelayan langsung</div>
+            <div class="bmc-item"><strong>Kualitas Terjaga</strong> — cold chain end-to-end + IoT</div>
+            <div class="bmc-item"><strong>Supply Stabil</strong> — seafood + ayam olahan</div>
+            <div class="bmc-item"><strong>Brand Terstandarisasi</strong> — sistem franchise</div>
+            <div class="bmc-item"><strong>Teknologi Lengkap</strong> — app order + inventory</div>
+            <div class="bmc-item"><strong>Traceability</strong> dari nelayan ke reseller</div>
+        </div>
+        <div class="bmc-block">
+            <div class="bmc-title"><i class="fas fa-users"></i> Hub. Pelanggan</div>
+            <div class="bmc-item">Support personal via aplikasi</div>
+            <div class="bmc-item">Training & onboarding mitra</div>
+            <div class="bmc-item">Community reseller & agen</div>
+            <div class="bmc-item">Order, tracking & payment via App</div>
+        </div>
+        <div class="bmc-block">
+            <div class="bmc-title"><i class="fas fa-user-friends"></i> Segmen Pelanggan</div>
+            <div class="bmc-item"><strong>Primer:</strong> Reseller kecil & UMKM</div>
+            <div class="bmc-item"><strong>Primer:</strong> Warung & HORECA kecil</div>
+            <div class="bmc-item"><strong>Sekunder:</strong> Gudang Agen (10–20 ton)</div>
+            <div class="bmc-item"><strong>Sekunder:</strong> Distributor regional</div>
+        </div>
+        <div class="bmc-block">
+            <div class="bmc-title"><i class="fas fa-cogs"></i> Sumber Daya Utama</div>
+            <div class="bmc-item">Cold Storage Induk (multi lokasi)</div>
+            <div class="bmc-item">Aplikasi + Dashboard + IoT Sensor</div>
+            <div class="bmc-item">Brand & SOP Franchise</div>
+            <div class="bmc-item">Kontrak nelayan & supplier besar</div>
+            <div class="bmc-item">Tim operasional & QC</div>
+        </div>
+        <div class="bmc-block" style="grid-column: 4 / 6;">
+            <div class="bmc-title"><i class="fas fa-truck"></i> Saluran Distribusi</div>
+            <div class="bmc-item">Aplikasi Mobile (Reseller & Agen)</div>
+            <div class="bmc-item">Gudang Agen (pickup & delivery)</div>
+            <div class="bmc-item">Cold Storage Induk (buyer besar)</div>
+            <div class="bmc-item">Dashboard Management</div>
+        </div>
+    </div>
+
+    <div class="bmc-bottom">
+        <div class="bmc-block bmc-cost">
+            <div class="bmc-title"><i class="fas fa-wallet"></i> Struktur Biaya</div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div>
+                    <div style="font-size: 12px; font-weight: 700; color: #dc2626; margin-bottom: 8px;">FIXED COST</div>
+                    <div class="bmc-item" style="border-color: rgba(220,38,38,0.1);">Capex Cold Storage + IoT</div>
+                    <div class="bmc-item" style="border-color: rgba(220,38,38,0.1);">Gaji tim pusat</div>
+                    <div class="bmc-item" style="border-color: rgba(220,38,38,0.1);">Pengembangan teknologi</div>
+                </div>
+                <div>
+                    <div style="font-size: 12px; font-weight: 700; color: #dc2626; margin-bottom: 8px;">VARIABLE COST</div>
+                    <div class="bmc-item" style="border-color: rgba(220,38,38,0.1);">Pembelian produk</div>
+                    <div class="bmc-item" style="border-color: rgba(220,38,38,0.1);">Listrik (biaya terbesar)</div>
+                    <div class="bmc-item" style="border-color: rgba(220,38,38,0.1);">Distribusi & training</div>
+                </div>
+            </div>
+        </div>
+        <div class="bmc-block bmc-revenue">
+            <div class="bmc-title"><i class="fas fa-coins"></i> Aliran Pendapatan</div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                <div class="bmc-item"><strong>Franchise Fee</strong> Agen & Reseller</div>
+                <div class="bmc-item"><strong>Royalty Fee</strong> bulanan</div>
+                <div class="bmc-item"><strong>Margin Supply</strong> seafood & ayam</div>
+                <div class="bmc-item"><strong>Sewa Slot</strong> Cold Storage</div>
+                <div class="bmc-item"><strong>Transaction Fee</strong> aplikasi</div>
+                <div class="bmc-item">Value Added Services</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ====== TAB 5: TEKNOLOGI ====== -->
+<div id="tab-teknologi" class="section">
+    <div class="section-title"><i class="fas fa-microchip"></i> Teknologi & Infrastruktur</div>
+    <div class="section-desc">Stack teknologi yang menjalankan seluruh ekosistem Baruna ColdHub.</div>
+
+    <div class="grid-2" style="margin-bottom: 24px;">
+        <div>
+            <div class="card-title" style="margin-bottom: 16px;"><i class="fas fa-mobile-alt"></i> Aplikasi & Digital</div>
+            <div class="tech-item">
+                <div class="tech-dot"></div>
+                <div>
+                    <h5>Aplikasi Mobile Reseller</h5>
+                    <p>Order produk, cek stok real-time, bayar, lacak pengiriman</p>
+                </div>
+            </div>
+            <div class="tech-item">
+                <div class="tech-dot"></div>
+                <div>
+                    <h5>Aplikasi Mobile Agen</h5>
+                    <p>Kelola stok, terima order dari reseller, monitoring suhu</p>
+                </div>
+            </div>
+            <div class="tech-item">
+                <div class="tech-dot"></div>
+                <div>
+                    <h5>Dashboard Management Central</h5>
+                    <p>Pantau semua mitra, stok, suhu, dan performa distribusi</p>
+                </div>
+            </div>
+            <div class="tech-item">
+                <div class="tech-dot"></div>
+                <div>
+                    <h5>Sistem Traceability</h5>
+                    <p>Lacak produk dari nelayan sampai ke pembeli akhir</p>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="card-title" style="margin-bottom: 16px;"><i class="fas fa-broadcast-tower"></i> IoT & Hardware</div>
+            <div class="tech-item">
+                <div class="tech-dot" style="background: var(--gold);"></div>
+                <div>
+                    <h5>IoT Temperature Sensor</h5>
+                    <p>Pemantauan suhu real-time di setiap titik cold storage</p>
+                </div>
+            </div>
+            <div class="tech-item">
+                <div class="tech-dot" style="background: var(--gold);"></div>
+                <div>
+                    <h5>Alert Otomatis</h5>
+                    <p>Notifikasi langsung ke App jika suhu melampaui batas aman</p>
+                </div>
+            </div>
+            <div class="tech-item">
+                <div class="tech-dot" style="background: var(--gold);"></div>
+                <div>
+                    <h5>Inventory Sensor</h5>
+                    <p>Update stok otomatis saat produk masuk dan keluar gudang</p>
+                </div>
+            </div>
+            <div class="tech-item">
+                <div class="tech-dot" style="background: var(--gold);"></div>
+                <div>
+                    <h5>Cold Chain Score</h5>
+                    <p>Skor kualitas cold chain untuk setiap batch produk (roadmap)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-title"><i class="fas fa-users-cog"></i> Bagaimana Teknologi Membantu Mitra?</div>
+        <div class="grid-3">
+            <div style="padding: 20px; background: #eff6ff; border-radius: 12px;">
+                <div style="font-size: 1.5rem; margin-bottom: 10px;">📱</div>
+                <div style="font-weight: 700; font-size: 14px; color: var(--ocean); margin-bottom: 8px;">Reseller</div>
+                <div class="list-item" style="font-size: 13px;"><i class="fas fa-circle" style="font-size: 6px; margin-top: 6px;"></i> Order kapan saja dari HP</div>
+                <div class="list-item" style="font-size: 13px;"><i class="fas fa-circle" style="font-size: 6px; margin-top: 6px;"></i> Lihat stok & harga real-time</div>
+                <div class="list-item" style="font-size: 13px;"><i class="fas fa-circle" style="font-size: 6px; margin-top: 6px;"></i> Pantau suhu freezer sendiri</div>
+            </div>
+            <div style="padding: 20px; background: #f0fdf4; border-radius: 12px;">
+                <div style="font-size: 1.5rem; margin-bottom: 10px;">🏭</div>
+                <div style="font-weight: 700; font-size: 14px; color: #065f46; margin-bottom: 8px;">Gudang Agen</div>
+                <div class="list-item" style="font-size: 13px;"><i class="fas fa-circle" style="font-size: 6px; margin-top: 6px;"></i> Kelola banyak reseller sekaligus</div>
+                <div class="list-item" style="font-size: 13px;"><i class="fas fa-circle" style="font-size: 6px; margin-top: 6px;"></i> Alert otomatis jika suhu naik</div>
+                <div class="list-item" style="font-size: 13px;"><i class="fas fa-circle" style="font-size: 6px; margin-top: 6px;"></i> Laporan omzet & performa</div>
+            </div>
+            <div style="padding: 20px; background: #fefce8; border-radius: 12px;">
+                <div style="font-size: 1.5rem; margin-bottom: 10px;">🏢</div>
+                <div style="font-weight: 700; font-size: 14px; color: #92400e; margin-bottom: 8px;">Central Baruna</div>
+                <div class="list-item" style="font-size: 13px;"><i class="fas fa-circle" style="font-size: 6px; margin-top: 6px;"></i> Pantau semua node sekaligus</div>
+                <div class="list-item" style="font-size: 13px;"><i class="fas fa-circle" style="font-size: 6px; margin-top: 6px;"></i> Data permintaan & tren produk</div>
+                <div class="list-item" style="font-size: 13px;"><i class="fas fa-circle" style="font-size: 6px; margin-top: 6px;"></i> Evaluasi kinerja franchisee</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ====== TAB 6: ROADMAP ====== -->
+<div id="tab-roadmap" class="section">
+    <div class="section-title"><i class="fas fa-road"></i> Roadmap Implementasi</div>
+    <div class="section-desc">Rencana bertahap pengembangan sistem Baruna ColdHub dari Fase 1 hingga Fase 3.</div>
+
+    <div class="highlight-box" style="margin-bottom: 28px;">
+        <h3><i class="fas fa-compass"></i> &nbsp;Prinsip Pengembangan</h3>
+        <p>Baruna ColdHub dibangun secara bertahap — mulai dari fondasi sistem cold chain yang kuat, lalu ekspansi digital, hingga fitur premium seperti Cold Chain Score dan asuransi produk. Setiap fase memiliki milestone yang terukur dan bisa dievaluasi.</p>
+    </div>
+
+    <div class="phase-item">
+        <div class="phase-badge phase-1">Fase 1</div>
+        <div>
+            <div style="font-weight: 700; font-size: 15px; color: var(--ocean); margin-bottom: 6px;">Fondasi Cold Chain</div>
+            <p>Pasang IoT sensor di semua titik cold storage. Buat SOP cold chain yang lengkap dan tertulis. Latih tim QC internal. Standardisasi proses penerimaan & grading produk.</p>
+        </div>
+    </div>
+
+    <div class="phase-item">
+        <div class="phase-badge phase-2">Fase 2</div>
+        <div>
+            <div style="font-weight: 700; font-size: 15px; color: #065f46; margin-bottom: 6px;">Ekspansi Digital & Mitra</div>
+            <p>Terapkan sistem monitoring di semua Gudang Agen. Integrasikan data suhu & stok ke Dashboard Central secara real-time. Onboarding gelombang pertama franchisee Agen & Reseller. Aktifkan fitur order dan payment di aplikasi mobile.</p>
+        </div>
+    </div>
+
+    <div class="phase-item">
+        <div class="phase-badge phase-3">Fase 3</div>
+        <div>
+            <div style="font-weight: 700; font-size: 15px; color: #92400e; margin-bottom: 6px;">Fitur Premium & Scaling</div>
+            <p>Kembangkan fitur "Cold Chain Score" — skor kualitas per batch produk yang bisa dilihat semua pihak. Siapkan program asuransi produk beku. Buka jalur ekspor produk premium. Skalakan jaringan franchisee ke lebih banyak kota dan pulau.</p>
+        </div>
+    </div>
+
+    <!-- Summary boxes -->
+    <div class="grid-3" style="margin-top: 24px;">
+        <div class="card" style="border-top: 3px solid var(--wave);">
+            <div class="card-title"><i class="fas fa-flag"></i> Fokus Saat Ini</div>
+            <div class="list-item"><i class="fas fa-dot-circle"></i> Rekrut & onboard Gudang Agen pertama</div>
+            <div class="list-item"><i class="fas fa-dot-circle"></i> Finalisasi SOP & modul pelatihan</div>
+            <div class="list-item"><i class="fas fa-dot-circle"></i> Setup IoT di Cold Storage Induk</div>
+        </div>
+        <div class="card" style="border-top: 3px solid #16a34a;">
+            <div class="card-title"><i class="fas fa-chart-line"></i> Target Pertumbuhan</div>
+            <div class="list-item"><i class="fas fa-dot-circle"></i> 10+ Gudang Agen aktif (Tahun 1)</div>
+            <div class="list-item"><i class="fas fa-dot-circle"></i> 100+ Reseller aktif (Tahun 1)</div>
+            <div class="list-item"><i class="fas fa-dot-circle"></i> 5 kota besar tercakup (Tahun 2)</div>
+        </div>
+        <div class="card" style="border-top: 3px solid var(--gold);">
+            <div class="card-title"><i class="fas fa-star"></i> Keunggulan Kompetitif</div>
+            <div class="list-item"><i class="fas fa-dot-circle"></i> Sistem franchise cold chain pertama</div>
+            <div class="list-item"><i class="fas fa-dot-circle"></i> Teknologi IoT terintegrasi penuh</div>
+            <div class="list-item"><i class="fas fa-dot-circle"></i> Supply langsung nelayan</div>
+        </div>
+    </div>
+</div>
+
+</div><!-- end foam wrapper -->
+
+<div class="page-footer">
+    <strong>Baruna ColdHub</strong> — Hybrid Franchise + Integrated Cold Chain Model &nbsp;|&nbsp; Versi 1.0, Juni 2026
+</div>
+
+<script>
+    function showTab(name) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('tab-' + name).classList.add('active');
+        event.currentTarget.classList.add('active');
+    }
+</script>
+
+</body>
+</html>
